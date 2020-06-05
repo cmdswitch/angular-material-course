@@ -1,11 +1,6 @@
-
-
-
 import {Request, Response} from 'express';
-import {LESSONS} from "./db-data";
-import {setTimeout} from "timers";
-
-
+import {LESSONS} from './db-data';
+import {setTimeout} from 'timers';
 
 export function searchLessons(req: Request, res: Response) {
 
@@ -14,16 +9,18 @@ export function searchLessons(req: Request, res: Response) {
     const courseId = queryParams.courseId,
           filter = queryParams.filter || '',
           sortOrder = queryParams.sortOrder,
+          // tslint:disable-next-line: radix
           pageNumber = parseInt(queryParams.pageNumber) || 0,
+          // tslint:disable-next-line: radix
           pageSize = parseInt(queryParams.pageSize);
 
-    let lessons = Object.values(LESSONS).filter(lesson => lesson.courseId == courseId).sort((l1, l2) => l1.id - l2.id);
+    let lessons = Object.values(LESSONS).filter(lesson => lesson.courseId === courseId).sort((l1, l2) => l1.id - l2.id);
 
     if (filter) {
        lessons = lessons.filter(lesson => lesson.description.trim().toLowerCase().search(filter.toLowerCase()) >= 0);
     }
 
-    if (sortOrder == "desc") {
+    if (sortOrder === 'desc') {
         lessons = lessons.reverse();
     }
 
@@ -33,7 +30,5 @@ export function searchLessons(req: Request, res: Response) {
 
     setTimeout(() => {
         res.status(200).json({payload: lessonsPage});
-    },1000);
-
-
+    }, 1000);
 }
